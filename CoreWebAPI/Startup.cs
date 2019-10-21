@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 
 namespace CoreWebAPI
 {
@@ -18,8 +20,10 @@ namespace CoreWebAPI
         }
 
         //中间件
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,ILoggingBuilder loggingBuilder)
         {
+            //中间件Nlog
+            loggingBuilder.AddNLog();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -7,6 +7,7 @@ using CoreWebAPI.Models.ViewModels;
 using CoreWebAPI.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace CoreWebAPI.Controllers
 {
@@ -14,19 +15,32 @@ namespace CoreWebAPI.Controllers
     [Route("api/[controller]")]
     public class ProductController : Controller
     {
+        private readonly ILogger<ProductController> _logger;
+
+        //Ioc+DI示例：通过构造函数注入
+        public ProductController(ILogger<ProductController> logger)
+        {
+            _logger = logger;
+        }
+
         [HttpGet]
         public IActionResult GetProduct()
         {
             return Ok(ProductServices.productServices.products);
         }
         [HttpGet]
-        [Route("{id}",Name ="GetProduct")]
+        [Route("{id}", Name = "GetProduct")]
         public IActionResult GetProduct(int id)
         {
             var product = ProductServices.productServices.products.Find(x => x.Id == id);
-          if (product == null)
+            if (product == null)
+            {
+                //日志记录
+                _logger.LogInformation($"Id为{id}的产品没有找到..");
                 return NotFound();
+            }
             return Ok(product);
+
         }
         [HttpPost]
         public IActionResult Post([FromBody]ProductViewModel productViewModel)
@@ -37,19 +51,19 @@ namespace CoreWebAPI.Controllers
             if (productViewModel.Name == "产品")
                 ModelState.AddModelError("Name", "名称不可以为产品");
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);        
+                return BadRequest(ModelState);
             var maxId = ProductServices.productServices.products.Max(x => x.Id);
             var newProduct = new Product
             {
-                Id=++maxId,
-                Name=productViewModel.Name,
-                Price=productViewModel.Price
+                Id = ++maxId,
+                Name = productViewModel.Name,
+                Price = productViewModel.Price
             };
             ProductServices.productServices.products.Add(newProduct);
             return CreatedAtRoute("GetProduct", new { id = newProduct.Id }, newProduct);
         }
         [HttpPut("{id}")]
-        public IActionResult Put([FromBody] ProductModificationViewModel productModificationViewModel,int id)
+        public IActionResult Put([FromBody] ProductModificationViewModel productModificationViewModel, int id)
         {
             if (productModificationViewModel == null)
                 return BadRequest();
@@ -65,7 +79,7 @@ namespace CoreWebAPI.Controllers
             return NoContent();
         }
         [HttpPatch("{id}")]
-        public IActionResult Patch([FromBody]JsonPatchDocument<ProductModificationViewModel> patchDocument,int id)
+        public IActionResult Patch([FromBody]JsonPatchDocument<ProductModificationViewModel> patchDocument, int id)
         {
             if (patchDocument == null)
                 return BadRequest();
@@ -74,8 +88,8 @@ namespace CoreWebAPI.Controllers
                 return NotFound();
             var patch = new ProductModificationViewModel
             {
-                Name=model.Name,
-                Price=model.Price
+                Name = model.Name,
+                Price = model.Price
             };
             patchDocument.ApplyTo(patch, ModelState);
             //因为传入的是JsonPatchDocument,所以需要再检验一次
