@@ -6,65 +6,65 @@ using System.Threading.Tasks;
 
 namespace CoreWebAPI.Services
 {
-    public class ProductServices
+    public class ProductServicesMemory
     {
-        public static ProductServices productServices { get; } = new ProductServices();
-        public List<Product> products { get; }
+        public static ProductServicesMemory productServices { get; } = new ProductServicesMemory();
+        public List<ProductMemory> products { get; }
 
-        private ProductServices()
+        private ProductServicesMemory()
         {
-            products = new List<Product>
+            products = new List<ProductMemory>
             {
-                new Product
+                new ProductMemory
                 {
                     Id=1,
                     Name="牛奶",
-                    Price=2.5f,
-                    Materials=new List<Material>
+                    Price=new decimal(2.5),
+                    Materials=new List<MaterialMemory>
                     {
-                        new Material
+                        new MaterialMemory
                         {
                             Id = 1,
                             Name = "水"
                         }, 
-                        new Material
+                        new MaterialMemory
                         {
                             Id = 2,
                             Name = "奶粉"
                         }
                     }
                 },
-                new Product
+                new ProductMemory
                 {
                     Id=2,Name="猪肉",
-                    Price=12.5f,
-                    Materials=new List<Material>
+                    Price=new decimal(12.5),
+                    Materials=new List<MaterialMemory>
                     {
-                        new Material
+                        new MaterialMemory
                         {
                             Id = 3,
                             Name = "面粉"
                         },
-                        new Material
+                        new MaterialMemory
                         {
                             Id = 4,
                             Name = "糖"
                         }
                     }
                 },
-                new Product
+                new ProductMemory
                 {
                     Id=3,
                     Name="鸡蛋",
-                    Price=2.4f,
-                    Materials=new List<Material>
+                    Price=new decimal(1.5),
+                    Materials=new List<MaterialMemory>
                     {
-                        new Material
+                        new MaterialMemory
                         {
                             Id = 5,
                             Name = "麦芽"
                         },
-                        new Material
+                        new MaterialMemory
                         {
                             Id = 6,
                             Name = "地下水"

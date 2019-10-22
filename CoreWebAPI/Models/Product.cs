@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,13 +11,20 @@ namespace CoreWebAPI.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public float Price { get; set; }
-        //为子属性添加一个导航属性
+        public decimal Price { get; set; }
+        public string  Describer { get; set; }
+        //通过导航属性配置1：N，Product为1
         public ICollection<Material> Materials { get; set; }
     }
-    public class Material
+    //FluentAPI
+    public class ProductConfiguration:IEntityTypeConfiguration<Product>
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public void Configure(EntityTypeBuilder<Product> builder)
+        {
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
+            builder.Property(x => x.Price).HasColumnType("decimal(8,2)");
+            builder.Property(x => x.Describer).HasMaxLength(200);
+        }
     }
 }

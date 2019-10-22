@@ -13,7 +13,7 @@ namespace CoreWebAPI.Controllers
         [HttpGet]
         public IActionResult GetMaterial()
         {
-            var material = ProductServices.productServices.products;
+            var material = ProductServicesMemory.productServices.products;
             if (material == null)
                 return NotFound();
             return Ok(material);
@@ -21,7 +21,7 @@ namespace CoreWebAPI.Controllers
         [HttpGet("{productId}")]
         public IActionResult GetMaterialAll(int productId)
         {
-            var material = ProductServices.productServices.products.Find(x => x.Id == productId);
+            var material = ProductServicesMemory.productServices.products.Find(x => x.Id == productId);
             if (material == null)
                 return NotFound();
             return Ok(material);
@@ -29,7 +29,7 @@ namespace CoreWebAPI.Controllers
         [HttpGet("{productId}/{materialId}")]
         public IActionResult GetMaterialById(int productId,int materialId)
         {
-            var product = ProductServices.productServices.products.Find(x => x.Id == productId);
+            var product = ProductServicesMemory.productServices.products.Find(x => x.Id == productId);
             if (product == null)
                 return NotFound();
             var material = product.Materials.SingleOrDefault(x => x.Id == materialId);
