@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 
 namespace CoreWebAPI.Models
 {
-    public class ProductWithoutMaterialMemory
+    public class MaterialDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public decimal Price { get; set; }
-        public string Describer { get; set; }
     }
 }

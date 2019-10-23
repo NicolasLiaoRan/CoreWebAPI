@@ -15,5 +15,6 @@ namespace CoreWebAPI.Models.ViewModels
         [Display(Name ="价格")]
         [Range(0,Double.MaxValue,ErrorMessage ="{0}的值必须大于1")]
         public decimal Price { get; set; }
+        public string Describer { get; set; }
     }
 }

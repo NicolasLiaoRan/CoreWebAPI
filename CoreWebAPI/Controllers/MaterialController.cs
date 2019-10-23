@@ -7,6 +7,7 @@ using CoreWebAPI.Services;
 using CoreWebAPI.Repositories;
 using CoreWebAPI.Models;
 using Microsoft.Extensions.Logging;
+using AutoMapper;
 
 namespace CoreWebAPI.Controllers
 {
@@ -39,11 +40,14 @@ namespace CoreWebAPI.Controllers
                 _logger.LogInformation($"没能找到{productId}对应的Material");
                 return NotFound();
             }
-            var results = materials.Select(material => new MaterialMemory
-            {
-                Id=material.Id,
-                Name=material.Name
-            }).ToList();
+            //手动映射
+            //var results = materials.Select(material => new MaterialDTO
+            //{
+            //    Id=material.Id,
+            //    Name=material.Name
+            //}).ToList();
+            //AutoMapper
+            var results = Mapper.Map<IEnumerable<MaterialDTO>>(materials);
             return Ok(results);
         }
         [HttpGet("{productId}/{materialId}")]
@@ -55,11 +59,14 @@ namespace CoreWebAPI.Controllers
                 _logger.LogInformation($"{productId}对应的{materialId}没有找到");
                 return NotFound();
             }
-            var result = new MaterialMemory
-            {
-                Id = material.Id,
-                Name = material.Name
-            };
+            //手动映射
+            //var result = new MaterialDTO
+            //{
+            //    Id = material.Id,
+            //    Name = material.Name
+            //};
+            //AutoMapper
+            var result = Mapper.Map<MaterialDTO>(material);
             return Ok(result);
         }
     }

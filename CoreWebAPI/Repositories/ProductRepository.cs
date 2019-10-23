@@ -39,5 +39,19 @@ namespace CoreWebAPI.Repositories
         {
             return _myDbContext.Products.OrderBy(x => x.Name).ToList();
         }
+        //新增(但并不持久化到数据库)
+        public void AddProduct(Product product)
+        {
+            _myDbContext.Products.Add(product);
+        }
+        public bool Save()
+        {
+            return _myDbContext.SaveChanges() >= 0;
+        }
+
+        public void DeleteProduct(Product product)
+        {
+            _myDbContext.Products.Remove(product);
+        }
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CoreWebAPI.Data;
+using CoreWebAPI.Models;
+using CoreWebAPI.Models.ViewModels;
 using CoreWebAPI.Repositories;
 using CoreWebAPI.Services;
 using Microsoft.AspNetCore.Builder;
@@ -58,6 +60,18 @@ namespace CoreWebAPI
             myDbContext.SeedForContext();
             //可以配置Status Code中间件
             app.UseStatusCodePages();
+            //配置AutoMapper
+            AutoMapper.Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Product, ProductWithoutMaterialDTO>();
+                cfg.CreateMap<Product, ProductDTO>();
+                //注意ICollection<T>的映射无法自动识别，需要再加一层
+                cfg.CreateMap<Material, MaterialDTO>();
+                //还有对ViewModel的映射
+                cfg.CreateMap<ProductViewModel, Product>();
+                cfg.CreateMap<ProductModificationViewModel, Product>();
+                cfg.CreateMap<Product, ProductModificationViewModel>();
+            });
             app.UseMvc();
         }
     }

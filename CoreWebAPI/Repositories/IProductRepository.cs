@@ -12,5 +12,8 @@ namespace CoreWebAPI.Repositories
         Product GetProduct(int productId, bool includeMaterials);
         IEnumerable<Material> GetMaterialsForProduct(int productId);
         Material GetMaterialForProduct(int productId, int materialId);
+        void AddProduct(Product product);
+        bool Save();
+        void DeleteProduct(Product product);
     }
 }
